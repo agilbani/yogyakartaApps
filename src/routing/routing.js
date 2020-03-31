@@ -20,7 +20,7 @@ import Home from '../containers/home/home';
 let store = compose(applyMiddleware(ReduxThunk))(createStore)(reducers);
 let persistor = persistStore(store);
 
-export default class routing extends Component {
+export default class routing extends Component { 
   render() {
     return (
       <Provider store={store}>
