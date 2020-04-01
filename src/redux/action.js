@@ -1,57 +1,60 @@
 import axios from 'axios';
-const BASE_URL = 'http://maxxapi.technopartner.rocks/';
+const BASE_URL = 'http://recruitment.devmind2.net/';
 
 export default {
   // @start auth api
-  getToken: body => {
-    return dispatch => {
-      axios
-        .post(BASE_URL + 'oauth/access_token', body)
-        .then(response => {
-          console.log(response, 'succcss');
-          return dispatch({type: 'GET_TOKEN_SUCCESS', response});
-        })
-        .catch(error => {
-          console.log(JSON.parse(JSON.stringify(error)), 'error');
-          // let message = errorMessage(error);
-          // return dispatch({type: 'LOGIN_ERROR', message});
-        });
-    };
-  },
 
   login: body => {
+    console.log('aaaa');
     return dispatch => {
       axios
         .post(BASE_URL + 'api/login', body, {
           headers: {
             'Content-Type': 'application/json',
-            Authorization: body.token_type + ' ' + body.access_token,
           },
         })
         .then(response => {
-          console.log(response, 'succcss');
+          console.log(response, 'succcss login');
           return dispatch({type: 'LOGIN_SUCCESS', response});
         })
         .catch(error => {
           console.log(JSON.parse(JSON.stringify(error)), 'error');
-          // let message = errorMessage(error);
-          // return dispatch({type: 'LOGIN_ERROR', message});
+          return dispatch({type: 'LOGIN_ERROR'});
         });
     };
   },
 
-  getDataHOme: (body, token_type, access_token) => {
+  register: body => {
     return dispatch => {
       axios
-        .post(BASE_URL + 'api/v2/home', body, {
+        .post(BASE_URL + 'api/register', body, {
           headers: {
             'Content-Type': 'application/json',
-            Authorization: token_type + ' ' + access_token,
+          },
+        })
+        .then(response => {
+          console.log(response, 'succcss login');
+          return dispatch({type: 'REGISTER_SUCCESS', response});
+        })
+        .catch(error => {
+          console.log(JSON.parse(JSON.stringify(error)), 'error');
+          return dispatch({type: 'REGISTER_ERROR'});
+        });
+    };
+  },
+
+  getDestination: (page, token) => {
+    return dispatch => {
+      axios
+        .get(BASE_URL + `api/post?page=${page}`, {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer '+ token,
           },
         })
         .then(response => {
           console.log(response, 'succcss');
-          return dispatch({type: 'SUCCESS_DATA_HOME', response});
+          return dispatch({type: 'SUCCESS_DATA_DESTINATION', response, page});
         })
         .catch(error => {
           console.log(JSON.parse(JSON.stringify(error)), 'error');
@@ -61,23 +64,38 @@ export default {
     };
   },
 
-  getMenu: (token_type, access_token) => {
+  logoutApi: token => {
+    console.log('token', token);
+    
     return dispatch => {
       axios
-        .get(BASE_URL + 'api/menu/list', {
+        .post(BASE_URL + 'api/logout', {
           headers: {
             'Content-Type': 'application/json',
-            Authorization: token_type + ' ' + access_token,
+            Authorization: 'Bearer '+ token,
+            'Accept': 'application/json',
           },
         })
         .then(response => {
-          return dispatch({type: 'GET_DATA_MENU', response});
+          console.log(response, 'succcss logout');
+          return dispatch({type: 'LOGOUT_SUCCESS', response});
         })
         .catch(error => {
           console.log(JSON.parse(JSON.stringify(error)), 'error');
-          // let message = errorMessage(error);
-          // return dispatch({ type: 'ERROR', message });
+          // return dispatch({type: 'LOGIN_ERROR'});
         });
     };
   },
+
+  setLocation: (location) => {
+    return dispatch => {
+      return dispatch({type: "SET_LOCATION", location});
+    }
+  },
+
+  logout: () => {
+    return dispatch => {
+      return dispatch({type: "RESET"});
+    }
+  }
 };

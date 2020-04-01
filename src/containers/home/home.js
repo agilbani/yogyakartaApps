@@ -3,104 +3,49 @@ import {
   Text,
   View,
   Image,
-  ImageBackground,
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-import action from '../../redux/action';
 import {connect} from 'react-redux';
-import Drawer from '../../components/atom/navMenu/drawer';
-import Loading from '../../components/atom/loading/customLoading';
-import ComponentSwip from '../../components/organism/swipable/swipableComponent';
-import SwipeUpDown from 'react-native-swipe-up-down';
 import Colors from '../../styles/colors';
-import {Regular16} from '../../components/atom/typography/typography';
 import {Actions} from 'react-native-router-flux';
+import HomeComponent from '../../components/organism/home/homeComponent'
+import Geolocation from '@react-native-community/geolocation';
+import action from '../../redux/action'
 
 class Home extends Component {
   state = {
     show: false,
     loading: true,
     backgroundColor: 'rgba(255, 255, 255, 0.8)',
+    dataImage: [
+      {
+        image: 'https://cdn-5df39a54f911cb0cdc3f7221.closte.com/wp-content/uploads/2020/01/rumah-seribu-pohon-compressor-1024x562.jpg'
+      },
+      {
+        image: 'https://i.pinimg.com/originals/cc/ae/de/ccaede37aebbd0d9ab100d66b9cff1a6.jpg'
+      },
+      {
+        image: 'https://malioborotour.com/wp-content/uploads/2017/11/Cave-Tubing-Goa-Pindul-Gunungkidul-1.jpg'
+      },
+    ],
+    activeDotIndex: 0,
+    heightRoute: 0,
   };
 
   componentDidMount() {
-    const body = {
-      token: this.props.auth.dataLogin.token,
-      token_type: this.props.auth.clientToken.token_type,
-      access_token: this.props.auth.clientToken.access_token,
-    };
-
-    this.props.dispatch(action.getDataHOme(body));
-  }
-
-  componentWillReceiveProps(props) {
-    console.log('response home', props);
-    if (props.app) {
-      this.setState({loading: false});
-    }
+    Geolocation.getCurrentPosition(info => this.props.dispatch(action.setLocation(info.coords)));
   }
 
   render() {
     return (
-      <ImageBackground
-        source={require('../../assets/komponen/BackgroundHome.jpg')}
-        style={styles.container}
-        resizeMethod="resize">
-        <Loading show={this.state.loading} />
-        <View style={styles.header}>
-          <TouchableOpacity
-            onPress={() => this.setState({show: true})}
-            style={{padding: 3}}>
-            <Image
-              style={styles.img}
-              source={require('../../assets/komponen/NavDrawerBlack.png')}
-            />
-          </TouchableOpacity>
-        </View>
-        {this.props.app && this.props.app.dataHome ? (
-          <View style={{width: '95%', alignSelf: 'center'}}>
-            <Regular16 color={Colors.white}>
-              {this.props.app.dataHome.salam}
-            </Regular16>
-            <Regular16 color={Colors.white}>
-              {this.props.app.dataHome.username}
-            </Regular16>
-            <Regular16 color={Colors.white}>
-              IDR {this.props.app.dataHome.balance}
-            </Regular16>
-            <Regular16 color={Colors.white}>
-              {this.props.app.dataHome.beans} Beans
-            </Regular16>
-          </View>
-        ) : null}
-        {this.props.app ? (
-          <SwipeUpDown
-            itemMini={
-              <ComponentSwip
-                data={this.props.app ? this.props.app.dataHome : null}
-              />
-            }
-            itemFull={
-              <ComponentSwip
-                data={this.props.app ? this.props.app.dataHome : null}
-              />
-            }
-            height={100}
-            onShowMini={() =>
-              this.setState({backgroundColor: 'rgba(255, 255, 255, 0.8)'})
-            }
-            onShowFull={() => this.setState({backgroundColor: '#FFF'})}
-            disablePressToShow={false} // Press item mini to show full
-            style={{backgroundColor: this.state.backgroundColor}} // style for swipe
-          />
-        ) : null}
-        <Drawer
-          confirm={() => Actions.Menu()}
-          setState={(key, val) => this.setState({[key]: val})}
-          visible={this.state.show}
+      <View style={{flex: 1}}>
+        <HomeComponent
+          destinationPress={() => Actions.Destination()} 
+          accountPress={() => Actions.Account()} 
+          that={this} 
         />
-      </ImageBackground>
+      </View>
     );
   }
 }

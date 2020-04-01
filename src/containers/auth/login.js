@@ -1,9 +1,11 @@
 import React, {Component} from 'react';
-import {Alert} from 'react-native';
+import {Alert, View} from 'react-native';
 import LoginComponent from '../../components/organism/auth/loginComponent';
 import action from '../../redux/action';
 import {connect} from 'react-redux';
 import {Actions} from 'react-native-router-flux';
+import Colors from '../../styles/colors';
+import Loading from '../../components/atom/loading/customLoading';
 
 class login extends Component {
   state = {
@@ -18,15 +20,31 @@ class login extends Component {
       this.setState({loading: false});
       Actions.reset('Home');
     }
+
+    if (props.auth.loginError) {
+      this.setState({loading: false});
+      Alert.alert(
+        'Username atau Password Salah.',
+        '',
+        [
+          {text: 'OK', onPress: () => this.props.dispatch(action.logout())},
+        ],
+          {cancelable: false},
+      );
+    }
   }
 
   render() {
     return (
-      <LoginComponent
-        loading={this.state.loading}
-        that={this}
-        pressLogin={() => this.login()}
-      />
+      <View style={{flex: 1}}>
+        <Loading show={this.state.loading} />
+        <LoginComponent
+          that={this}
+          pressLogin={() => this.login()}
+          signUpPress={() => Actions.Register()}
+          // signUpPress={() => this.props.dispatch(action.logout())}
+        />
+      </View>
     );
   }
 
@@ -37,16 +55,14 @@ class login extends Component {
         'Data tidak boleh kosong, silahkan periksa kembali',
         '',
         [
-        {text: 'OK', onPress: () => console.log('OK Pressed')},
+          {text: 'OK', onPress: () => console.log('OK Pressed')},
         ],
-        {cancelable: false},
+          {cancelable: false},
       );
     } else {
       const body = {
         email: this.state.email,
         password: this.state.password,
-        token_type: this.props.auth.clientToken.token_type,
-        access_token: this.props.auth.clientToken.access_token,
       };
       this.props.dispatch(action.login(body));
       this.setState({loading: true});

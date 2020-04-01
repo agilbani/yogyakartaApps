@@ -7,10 +7,14 @@ const AUTH_STATE = {
   dataLogin: null,
   dataLoginError: null,
   isLoggedIn: false,
-  dataRegister: null,
+  loginError: false,
+  registerSuccess: false,
+  registerError: false,
   dataRegisterError: null,
   message: null,
-  clientToken: null,
+  logoutSuccess: false,
+  latitude: null,
+  longitude: null
 };
 
 const authReducer = (state = AUTH_STATE, action) => {
@@ -18,22 +22,51 @@ const authReducer = (state = AUTH_STATE, action) => {
     case 'RESET':
       return {
         ...state,
-        message: null,
+        dataLogin: null,
         dataLoginError: null,
-        dataRegister: null,
-        dataRegisterError: null,
-        clientToken: null,
-      };
-    case 'GET_TOKEN_SUCCESS':
-      return {
-        ...state,
-        clientToken: action.response.data,
+        isLoggedIn: false,
+        loginError: false,
+        registerSuccess: false,
+        registerError: false,
       };
     case 'LOGIN_SUCCESS':
       return {
         ...state,
         dataLogin: action.response.data,
         isLoggedIn: true,
+      };
+    case 'SET_LOCATION':
+      return {
+        ...state,
+        latitude: action.location.latitude,
+        longitude: action.location.longitude
+      };
+    case 'LOGIN_ERROR':
+      return {
+        ...state,
+        loginError: true,
+      };
+    case 'REGISTER_SUCCESS':
+      return {
+        ...state,
+        registerSuccess: true,
+      };
+    case 'REGISTER_ERROR':
+      return {
+        ...state,
+        registerError: true,
+      };
+    case 'LOGOUT_SUCCESS':
+      return {
+        ...state,
+        logoutSuccess: true,
+        message: action.response.status.message,
+        dataLogin: null,
+        dataLoginError: null,
+        isLoggedIn: false,
+        loginError: false,
+        registerSuccess: false,
+        registerError: false,
       };
 
     default:
@@ -49,7 +82,7 @@ const authPersistConfig = {
 
 // @start app reducer
 const APP_STATE = {
-  dataHome: null,
+  dataDestination: null,
   message: null,
   dataMenu: null,
 };
@@ -63,10 +96,19 @@ const appReducer = (state = APP_STATE, action) => {
         message: null,
         dataMenu: null,
       };
-    case 'SUCCESS_DATA_HOME':
+    case 'SUCCESS_DATA_DESTINATION':
+      let dataDest = [];
+      if (action.page > 1) {
+        for (i in state.dataDestination) {
+          dataDest.push(state.dataDestination[i]);
+        }
+      }
+      for (o in action.response.data.data) {
+        dataDest.push(action.response.data.data[o]);
+      }
       return {
         ...state,
-        dataHome: action.response.data,
+        dataDestination: dataDest,
       };
     case 'GET_DATA_MENU':
       return {
@@ -88,7 +130,7 @@ const appPersistConfig = {
 const rootPersistConfig = {
   key: 'root',
   storage: storage,
-  blacklist: ['navigation'],
+  blacklist: ['navigation', 'app'],
 };
 
 const rootReducer = combineReducers({

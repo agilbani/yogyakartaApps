@@ -1,9 +1,9 @@
 import React from 'react';
 import {View, TextInput, Image} from 'react-native';
-import styles from './inputStyle';
+import styles from './style'
 import {Regular12} from '../typography/typography';
 
-const BorderInput = ({
+const FormInput = ({
   textLabel,
   colorText,
   onChangeText,
@@ -52,4 +52,4 @@ const BorderInput = ({
   );
 };
 
-export default BorderInput;
+export default FormInput;

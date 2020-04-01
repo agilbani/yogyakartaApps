@@ -12,10 +12,13 @@ import {PersistGate} from 'redux-persist/integration/react';
 import reducers from '../redux/reducers';
 
 //screen
-import LandingPage from '../containers/landingPage';
 import Login from '../containers/auth/login';
-import Menu from '../containers/menu/menu';
+import Register from '../containers/auth/register';
 import Home from '../containers/home/home';
+import Destination from '../containers/home/destination/destination'
+import Account from '../containers/home/account/account'
+import Splash from '../../Splash';
+import DetailDestination from '../containers/home/destination/detailDestination';
 
 let store = compose(applyMiddleware(ReduxThunk))(createStore)(reducers);
 let persistor = persistStore(store);
@@ -27,11 +30,13 @@ export default class routing extends Component {
         <PersistGate loading={null} persistor={persistor}>
           <Router>
             <Scene key="root">
-              <Scene key="LandingPage" component={LandingPage} hideNavBar />
-              <Scene key="Home" component={Home} hideNavBar />
-              <Scene key="Menu" component={Menu} hideNavBar />
+              <Scene key="Splash" component={Splash} hideNavBar />
               <Scene key="Login" component={Login} hideNavBar />
-              {/* <Scene key="splash" component={SplashScreen} hideNavBar /> */}
+              <Scene key="Register" component={Register} hideNavBar />
+              <Scene key="Home" component={Home} hideNavBar />
+              <Scene key="Destination" component={Destination} hideNavBar />
+              <Scene key="Account" component={Account} hideNavBar />
+              <Scene key="DetailDestination" component={DetailDestination} hideNavBar />
             </Scene>
           </Router>
         </PersistGate>

@@ -8,7 +8,7 @@ const Colors = {
    success: '#2DB643',
    greyText: '#3C3C3C',
    greyInactive: '#828282',
-   blackText: '4f4f4f',
+   blackText: '#4f4f4f',
    black: '#000',
    greyBackground: '#f4f4f4',
    grey: 'grey',
@@ -16,6 +16,7 @@ const Colors = {
    logoutRed: '#E0514A',
    borderColor: '#E0E0E0',
    lightBlue: '#5487C3',
+   blue4: '#413DAD',
 };
 
 export default Colors;
