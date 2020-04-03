@@ -7,7 +7,6 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
-import Colors from '../../../styles/colors';
 import ContentLogin from '../../moleculs/auth/contentLogin';
 
 const loginComponent = ({

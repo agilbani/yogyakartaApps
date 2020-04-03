@@ -9,8 +9,8 @@ import styles from './style';
 import {Regular18, Regular14} from '../../atom/typography/typography';
 import Colors from '../../../styles/colors';
 import CardView from '../../atom/card/cardView';
-import InputFrom from '../../atom/fieldInput/input';
-import Button from '../../atom/button/normalButton';
+import InputFrom from '../../atom/FieldInput/input';
+import Button from '../../atom/Button/normalButton';
 
 const ContentLogin = ({
   that,

@@ -40,7 +40,8 @@ class Account extends Component {
 
    logout = () => {
       // this.setState({loading: true})
-      this.props.dispatch(action.logoutApi(this.props.auth.dataLogin.data.token))
+      this.props.dispatch(action.logout())
+      Actions.reset('Login')
    }
 }
 

@@ -9,7 +9,7 @@ import styles from './style';
 import {Regular18, Regular14, Bold18} from '../../atom/typography/typography';
 import Colors from '../../../styles/colors';
 import CardView from '../../atom/card/cardView';
-import Button from '../../atom/button/normalButton';
+import Button from '../../atom/Button/normalButton';
 
 const ContentAccount = ({
   that,

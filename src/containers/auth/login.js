@@ -42,7 +42,6 @@ class login extends Component {
           that={this}
           pressLogin={() => this.login()}
           signUpPress={() => Actions.Register()}
-          // signUpPress={() => this.props.dispatch(action.logout())}
         />
       </View>
     );
